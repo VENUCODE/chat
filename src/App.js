@@ -1,25 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
-
+import "./styles/main.scss"
+import 'rsuite/dist/styles/rsuite-default.css'
+import { Switch } from 'react-router-dom';
+import Home from './pages/home';
+import PrivateRoute from './components/privateRoute';
+import PublicRoute from './components/publicRoute';
+import SignIn from './pages/signIn';
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <PublicRoute path="/signin">
+      <SignIn/>
+      </PublicRoute>
+      <PrivateRoute path="/">
+        <Home/>
+      </PrivateRoute>
+    </Switch>
   );
 }
-
 export default App;
