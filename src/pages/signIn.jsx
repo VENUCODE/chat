@@ -1,7 +1,11 @@
 import React from 'react';
 import { Alert, Button, Col, Container, Grid, Icon, Panel, Row } from 'rsuite';
 import { auth, database } from '../misc/firebase';
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  getAdditionalUserInfo,
+} from 'firebase/auth';
 import { serverTimestamp, ref, set } from 'firebase/database';
 
 const SignIn = () => {
@@ -22,13 +26,18 @@ const SignIn = () => {
   const singInwithProvide = async provider => {
     try {
       const result = await signInWithPopup(auth, provider);
-      console.log(result);
-      writeUserData(
-        result.user.uid,
-        result.user.displayName,
-        result.user.email,
-        result.user.photoURL
-      );
+      const userInfo = getAdditionalUserInfo(result);
+      if (userInfo.isNewUser) {
+        writeUserData(
+          result.user.uid,
+          result.user.displayName,
+          result.user.email,
+          result.user.photoURL
+        );
+        Alert.success('Welcome' + result.user.displayName, 2000);
+      } else {
+        Alert.info('Existing user:' + result.user.displayName, 2000);
+      }
     } catch (error) {
       Alert.error(error.message);
       console.log(error.message);
