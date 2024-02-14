@@ -1,20 +1,16 @@
 import React from 'react';
-import { useProfile } from '../context/profile.context';
-import { Col, Container, Grid, Row } from 'rsuite';
+import { Col, Grid, Row } from 'rsuite';
+import Sidebar from '../components/Sidebar';
 
 const Home = () => {
-  const { profile } = useProfile();
   return (
-    <Container>
-      <Grid className="mt-page">
-        <Row>
-          <Col xs={24} md={12} mdOffset={6} className="text-center ">
-            <div>{profile.username}</div>
-            <div>{profile.email}</div>
-          </Col>
-        </Row>
-      </Grid>
-    </Container>
+    <Grid fluid className="h-100">
+      <Row>
+        <Col sm={24} md={8}>
+          <Sidebar />
+        </Col>
+      </Row>
+    </Grid>
   );
 };
 
