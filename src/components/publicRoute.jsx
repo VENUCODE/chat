@@ -5,7 +5,6 @@ import Loading from './loader';
 
 const PublicRoute = ({ children, ...props }) => {
   const { profile, isLoading } = useProfile();
-  console.log('public isLoading :', isLoading);
   if (profile && !isLoading) {
     return <Redirect to="/" />;
   } else if (isLoading) {

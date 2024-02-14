@@ -17,8 +17,8 @@ const SignIn = () => {
         profile_picture: imageUrl,
         created_at: serverTimestamp(),
       });
-      console.log(info);
-      Alert.info('Written', 2000);
+
+      Alert.info('newUser', 2000);
     } catch (error) {
       Alert.warning(error.message, 2000);
     }
@@ -34,10 +34,8 @@ const SignIn = () => {
           result.user.email,
           result.user.photoURL
         );
-        Alert.success('Welcome' + result.user.displayName, 2000);
-      } else {
-        Alert.info('Existing user:' + result.user.displayName, 2000);
       }
+      Alert.success('Welcome' + result.user.displayName, 2000);
     } catch (error) {
       Alert.error(error.message);
       console.log(error.message);
