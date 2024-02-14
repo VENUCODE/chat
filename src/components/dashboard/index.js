@@ -4,6 +4,7 @@ import { useProfile } from '../../context/profile.context';
 import EditableInput from '../EditableInput';
 import { child, ref, set } from 'firebase/database';
 import { database } from '../../misc/firebase';
+import UploadAvatarBtn from './UploadAvatarBtn';
 const Dashboard = ({ onSignOut }) => {
   const { profile } = useProfile();
   const onSave = async newdata => {
@@ -30,6 +31,10 @@ const Dashboard = ({ onSignOut }) => {
           placeholder="nick name of yours"
           onSave={onSave}
         />
+
+        <div className="block text-center bg-lime-200">
+          <UploadAvatarBtn />
+        </div>
       </Drawer.Body>
       <Drawer.Footer>
         <Button block color="red" onClick={onSignOut}>

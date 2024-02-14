@@ -55,7 +55,14 @@ const SignIn = () => {
                 <h2>Let's Chat</h2>
                 <p>A simple chatting application</p>
                 <div className="mt-3">
-                  <Button block color="orange" onClick={signInwithGoogle}>
+                  {/* <Phone /> */}
+
+                  <Button
+                    block
+                    color="orange"
+                    className=""
+                    onClick={signInwithGoogle}
+                  >
                     <Icon icon={'google'} /> SignIn with Google
                   </Button>
                 </div>
