@@ -1,6 +1,5 @@
-import { check } from 'prettier';
 import React, { useCallback, useState } from 'react';
-import { InputGroup, Input, Button, Icon } from 'rsuite';
+import { InputGroup, Input, Icon } from 'rsuite';
 
 const EditableInput = ({
   intialValue,
