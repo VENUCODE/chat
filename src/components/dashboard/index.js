@@ -1,13 +1,14 @@
-import React from 'react';
-import { Alert, Avatar, Button, Drawer, Icon } from 'rsuite';
+import React, { useState } from 'react';
+import { Alert, Badge, Button, Drawer, Avatar, Icon, Divider } from 'rsuite';
 import { useProfile } from '../../context/profile.context';
 import EditableInput from '../EditableInput';
 import { child, ref, set } from 'firebase/database';
 import { database } from '../../misc/firebase';
 import UploadAvatarBtn from './UploadAvatarBtn';
-import { getNameInitials } from '../../misc/helper';
+import ProfileAvatar from '../ProfileAvatar';
 const Dashboard = ({ onSignOut }) => {
   const { profile } = useProfile();
+  const [editable, setEditable] = useState(false);
   const onSave = async newdata => {
     const userRef = ref(database, `/profiles/${profile.uid}`);
     const nickNameRef = child(userRef, 'username');
@@ -25,27 +26,35 @@ const Dashboard = ({ onSignOut }) => {
         <Drawer.Title>Dashboard</Drawer.Title>
       </Drawer.Header>
       <Drawer.Body>
-        <h3> Hey , {profile.username}</h3>
-        <EditableInput
-          intialValue={profile.username}
-          label={'Nickname'}
-          placeholder="nick name of yours"
-          onSave={onSave}
-        />
-
-        <div className="block text-center bg-lime-200">
-          <UploadAvatarBtn />
+        <div className="d-flex  flex-row justify-between align-middle  gap-2">
+          <div className="img-fullsize d-flex ">
+            <ProfileAvatar src={profile.avatar} name={profile.username} />
+            <UploadAvatarBtn />
+          </div>
+          <div className="flex-1 gap-3 align-middle relative pt-16 text-center">
+            <h3 className="font-res"> Hey , {profile.username}</h3>
+            <span
+              onClick={() => {
+                setEditable(p => !p);
+              }}
+              className=" flex absolute top-8 right-0 text-slate-590 h-[1.5rem] p-1 ml-1 cursor-pointer rounded-md focus:bg-slate-200 hover:bg-slate-800"
+            >
+              <Icon icon={'edit2'} />
+              Edit
+            </span>
+          </div>
         </div>
-        <div className="d-flex relative justify-content-center padded img-fullsize ">
-          {profile.avatar && (
-            <Avatar src={profile.avatar} circle className="" />
-          )}
-          {!profile.avatar && (
-            <Avatar circle size="lg">
-              {getNameInitials(profile.username)}
-            </Avatar>
-          )}
-        </div>
+        <Divider>Profile</Divider>
+        {editable && (
+          <EditableInput
+            intialValue={profile.username}
+            label={'Nickname'}
+            placeholder="nick name of yours"
+            onSave={onSave}
+            setEditable={setEditable}
+            editable={editable}
+          />
+        )}
       </Drawer.Body>
       <Drawer.Footer>
         <Button block color="red" onClick={onSignOut}>

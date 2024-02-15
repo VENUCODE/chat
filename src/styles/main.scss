@@ -40,6 +40,13 @@ body,
     height: auto !important;
   }
 }
+.profile-avatar {
+  height: 80px;
+  width: 80px;
+  * {
+    object-fit: cover;
+  }
+}
 
 .chat-top,
 .chat-middle,
@@ -47,7 +54,10 @@ body,
   margin: 0;
   padding: 0;
 }
-
+.font-res {
+  font-size: clamp(16px, 2vw, 24px);
+  line-height: 1.5rem;
+}
 .chat-top,
 .chat-bottom {
   display: flex;

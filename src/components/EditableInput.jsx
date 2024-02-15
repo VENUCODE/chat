@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from 'react';
-import { InputGroup, Input, Icon } from 'rsuite';
+import React, { useCallback, useEffect, useState } from 'react';
+import { InputGroup, Input, Icon, Alert } from 'rsuite';
 
 const EditableInput = ({
   intialValue,
+  editable,
+  setEditable,
   label = null,
   emptyMsg = 'input is empty',
   placeholder = 'Write your value',
@@ -10,9 +12,10 @@ const EditableInput = ({
   ...inputProps
 }) => {
   const [inputValue, setInputValue] = useState(intialValue);
-  const [isEditable, setisEditable] = useState(false);
+  const [isEditable, setisEditable] = useState(editable);
   const editClick = useCallback(() => {
     setisEditable(p => !p);
+
     setInputValue(intialValue);
   }, [intialValue]);
 
@@ -21,15 +24,21 @@ const EditableInput = ({
     if (trimmedValue && trimmedValue !== intialValue) {
       await onSave(trimmedValue);
       setisEditable(false);
+    } else {
+      Alert.info('No changes made');
+      setEditable(false);
     }
   };
   const handleInputChange = (value, event) => {
     setInputValue(value);
   };
+  useEffect(() => {
+    setEditable(isEditable);
+  }, [isEditable, setEditable]);
   return (
-    <>
+    <div className="mt-4">
       {label}
-      <InputGroup>
+      <InputGroup className="focus:outline-none hover:outline-none border-none">
         <Input
           disabled={!isEditable}
           value={inputValue}
@@ -45,7 +54,7 @@ const EditableInput = ({
           </InputGroup.Button>
         )}
       </InputGroup>
-    </>
+    </div>
   );
 };
 

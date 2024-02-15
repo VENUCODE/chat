@@ -85,16 +85,21 @@ const UploadAvatarBtn = () => {
     }
   };
   return (
-    <div className="mt-8 ">
-      <label htmlFor="avatar-upload" className=" relative cursor-pointer ">
-        Select new avatar
-        <input
-          type="file"
-          className="cursor-pointer"
-          accept={fileInputTypes}
-          onChange={handleFileChange}
-        />
-      </label>
+    <>
+      <div class="mt-10 absolute left-0 top-[-1rem]">
+        <label class="tracking-wide uppercase  cursor-pointer  bg-amber-500 p-1 d-grid text-white rounded-full h-[20px] w-[20px]  focus:bg-amber-800 hover:bg-amber-800">
+          <span class=" text-base leading-normal ">
+            <Icon icon={'edit2'} size="md" className="m-1" />
+            Edit
+          </span>
+          <input
+            type="file"
+            class="hidden"
+            accept={fileInputTypes}
+            onChange={handleFileChange}
+          />
+        </label>
+      </div>
 
       <Modal show={isOpen} onHide={close}>
         <Modal.Header>
@@ -132,7 +137,7 @@ const UploadAvatarBtn = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 };
 
