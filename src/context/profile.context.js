@@ -13,10 +13,11 @@ export const ProfileProvider = ({ children }) => {
         const starCountRef = ref(database, `/profiles/${authObj.uid}`);
 
         onValue(starCountRef, snapshot => {
-          const { username, created_at } = snapshot.val();
+          const { username, created_at, avatar } = snapshot.val();
           const data = {
             username,
             created_at,
+            avatar,
             uid: authObj.uid,
             email: authObj.email,
           };

@@ -1,10 +1,11 @@
 import React from 'react';
-import { Alert, Button, Drawer, Icon } from 'rsuite';
+import { Alert, Avatar, Button, Drawer, Icon } from 'rsuite';
 import { useProfile } from '../../context/profile.context';
 import EditableInput from '../EditableInput';
 import { child, ref, set } from 'firebase/database';
 import { database } from '../../misc/firebase';
 import UploadAvatarBtn from './UploadAvatarBtn';
+import { getNameInitials } from '../../misc/helper';
 const Dashboard = ({ onSignOut }) => {
   const { profile } = useProfile();
   const onSave = async newdata => {
@@ -34,6 +35,16 @@ const Dashboard = ({ onSignOut }) => {
 
         <div className="block text-center bg-lime-200">
           <UploadAvatarBtn />
+        </div>
+        <div className="d-flex relative justify-content-center padded img-fullsize ">
+          {profile.avatar && (
+            <Avatar src={profile.avatar} circle className="" />
+          )}
+          {!profile.avatar && (
+            <Avatar circle size="lg">
+              {getNameInitials(profile.username)}
+            </Avatar>
+          )}
         </div>
       </Drawer.Body>
       <Drawer.Footer>
