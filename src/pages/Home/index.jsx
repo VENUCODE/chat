@@ -32,7 +32,7 @@ const Home = () => {
           {/* //SECTION -Home page is already private */}
           <Switch>
             <Route exact path="/chat/:chatId">
-              <Col xs={24} md={16} className="h-100">
+              <Col xs={24} md={16} className="h-100 bg-blue-100">
                 <Chat />
               </Col>
             </Route>

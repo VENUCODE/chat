@@ -1,0 +1,13 @@
+The useContext hool doesnot allow us to select a particular value form it
+every time any one value changes in it , it will re render all the values present in it
+For example :
+useProfile() context has profile value and isLoading , now when username in the profile object changes in the database 
+the whole values are re-rendered on the page, 
+this causes the extra rendering on the system
+to avoid this we can split the contexts in the provider component
+<profile.provider>
+then sub contexts in it
+
+
+--we use useContextSelector(someContext,(value)=>value.age)
+this allows us to rerender a particular value

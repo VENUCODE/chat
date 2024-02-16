@@ -6,6 +6,7 @@ import Bottom from '../../components/chatwindow/Bottom';
 import { useRooms } from '../../context/rooms.context';
 import { Loader } from 'rsuite';
 import { Planet } from 'react-kawaii';
+import { CurrentRoomProvider } from '../../context/current-room.context';
 const Chat = () => {
   const { chatId } = useParams();
   //LINK - grabbing the current room data from the context
@@ -19,7 +20,7 @@ const Chat = () => {
   if (!currentRoom) {
     return (
       <div className="mt-page  text-center  ">
-        <div className="bg-teal-300">
+        <div className="">
           {' '}
           <Planet size="100" mood="sad" color="orange" />
         </div>
@@ -27,24 +28,30 @@ const Chat = () => {
       </div>
     );
   }
+  const { name, description } = currentRoom;
+  const currentRoomData = {
+    name,
+    description,
+  };
 
   return (
-    <div>
-      {/* //SECTION - top */}
-      <div className="chat-top">
-        <Top />
-      </div>
+    <CurrentRoomProvider data={currentRoomData}>
+      <div>
+        {/* //SECTION - top */}
+        <div className="chat-top bg-blue-500 px-2">
+          <Top />
+        </div>
+        {/* //SECTION -messages */}
+        <div className="chat-middle">
+          <Messages />
+        </div>
 
-      {/* //SECTION -messages */}
-      <div className="chat-middle">
-        <Messages />
+        {/* //SECTION -  bottom */}
+        <div className="chat-bottom">
+          <Bottom />
+        </div>
       </div>
-
-      {/* //SECTION -  bottom */}
-      <div className="chat-bottom">
-        <Bottom />
-      </div>
-    </div>
+    </CurrentRoomProvider>
   );
 };
 
