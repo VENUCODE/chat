@@ -8,9 +8,9 @@ function AssembleMessage(profile, chatId) {
   return {
     roomId: chatId,
     author: {
-      name: profile.username,
+      name: profile.name,
       uid: profile.uid,
-      createdAt: profile.created_at,
+      createdAt: profile.createdAt,
       ...(profile.avatar ? { avatar: profile.avatar } : {}),
     },
     createdAt: serverTimestamp(),
@@ -51,7 +51,7 @@ const Bottom = () => {
     };
     try {
       await update(ref(database), updates);
-      Alert.success('Message written in Db', 2000);
+
       setInput('');
       setIsLoading(false);
     } catch (error) {

@@ -11,11 +11,11 @@ import { serverTimestamp, ref, set } from 'firebase/database';
 const SignIn = () => {
   const writeUserData = async (userId, name, email, imageUrl) => {
     try {
-      const info = await set(ref(database, `/profiles/${userId}`), {
-        username: name,
+      await set(ref(database, `/profiles/${userId}`), {
+        name: name,
         email: email,
-        profile_picture: imageUrl,
-        created_at: serverTimestamp(),
+        avatar: imageUrl,
+        createdAt: serverTimestamp(),
       });
 
       Alert.info('newUser', 2000);
@@ -27,6 +27,7 @@ const SignIn = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const userInfo = getAdditionalUserInfo(result);
+      console.log(userInfo);
       if (userInfo.isNewUser) {
         writeUserData(
           result.user.uid,

@@ -4,7 +4,8 @@ import { Alert, Button, Icon, Modal, Loader } from 'rsuite';
 import AvatarEditor from 'react-avatar-editor';
 import { storage, database } from '../../misc/firebase';
 import { useProfile } from '../../context/profile.context';
-import { set, ref } from 'firebase/database';
+import { update, ref } from 'firebase/database';
+import { getUserUpdates } from '../../misc/helper';
 
 import {
   uploadBytes,
@@ -70,10 +71,15 @@ const UploadAvatarBtn = () => {
 
       const downloadUrl = await getDownloadURL(avatarFileRef);
       if (downloadUrl) {
-        const updateResult = await set(
-          ref(database, `/profiles/${profile.uid}/avatar`),
-          downloadUrl
+        const updates = await getUserUpdates(
+          profile.uid,
+          'avatar',
+          downloadUrl,
+          database
         );
+        await update(ref(database), updates);
+        console.log({ 'update from avatar': update });
+
         close();
         Alert.info('Avatar has been updated');
         setIsLoading(false);

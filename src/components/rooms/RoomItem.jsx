@@ -4,7 +4,6 @@ import ProfileAvatar from '../ProfileAvatar';
 import { useProfile } from '../../context/profile.context';
 const RoomItem = ({ room }) => {
   const { name, createdAt, lastMessage } = room;
-  const { profile } = useProfile();
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center">
