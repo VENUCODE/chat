@@ -57,6 +57,7 @@ body,
 .font-res {
   font-size: clamp(16px, 2vw, 24px);
   line-height: 1.5rem;
+  text-transform: capitalize;
 }
 .chat-top,
 .chat-bottom {

@@ -12,6 +12,7 @@ const Dashboard = ({ onSignOut }) => {
   const onSave = async newdata => {
     const userRef = ref(database, `/profiles/${profile.uid}`);
     const nickNameRef = child(userRef, 'username');
+
     try {
       await set(nickNameRef, newdata);
       Alert.success('NickName updated', 4000);
@@ -32,7 +33,7 @@ const Dashboard = ({ onSignOut }) => {
             <UploadAvatarBtn />
           </div>
           <div className="flex-1 gap-3 align-middle relative pt-16 text-center">
-            <h3 className="font-res capitalize"> Hey , {profile.username}</h3>
+            <h3 className="font-res "> Hey , {profile.username}</h3>
             <span
               onClick={() => {
                 setEditable(p => !p);
@@ -42,6 +43,13 @@ const Dashboard = ({ onSignOut }) => {
               <Icon icon={'edit2'} />
               Edit
             </span>
+            <div className="text-center mt-2">
+              <p>
+                created On
+                <Divider vertical />
+                {new Date(profile.created_at).toDateString()}
+              </p>
+            </div>
           </div>
         </div>
         <Divider>Profile</Divider>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   Alert,
   Button,
@@ -61,7 +61,7 @@ const CreateRoomBtn = () => {
   });
 
   return (
-    <div className="mt-2">
+    <div className="m-1">
       <Button color="green" onClick={openModal}>
         <Icon icon={'creative'} />
       </Button>
@@ -100,7 +100,7 @@ const CreateRoomBtn = () => {
             block
             appearance="primary"
             onClick={onSubmit}
-            disabled={!isLoading}
+            disabled={isLoading}
           >
             Create new chat room
           </Button>

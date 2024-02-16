@@ -86,7 +86,7 @@ const UploadAvatarBtn = () => {
   };
   return (
     <>
-      <div class="mt-10 absolute left-0 top-[-1rem]">
+      <div class="mt-10 absolute left-0 top-[-1rem] ">
         <label class="tracking-wide uppercase  cursor-pointer  bg-amber-500 p-1 d-grid text-white rounded-full h-[20px] w-[20px]  focus:bg-amber-800 hover:bg-amber-800">
           <span class=" text-base leading-normal ">
             <Icon icon={'edit2'} size="md" className="m-1" />

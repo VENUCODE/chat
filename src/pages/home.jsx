@@ -6,8 +6,11 @@ import { RoomsProvider } from '../context/rooms.context';
 const Home = () => {
   return (
     <RoomsProvider>
-      <Grid fluid className="h-100 overflow-y-hidden">
-        <Row className="h-100">
+      <Grid
+        fluid
+        style={{ 'overflow-y': 'hidden', height: '100%', ' margin': '0' }}
+      >
+        <Row className="h-100 m-0 p-0">
           <Col sm={24} md={8} className="h-100">
             <Sidebar />
           </Col>

@@ -7,12 +7,12 @@ import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 const ChatRoomlList = ({ aboveElementHeight }) => {
   const rooms = useRooms();
   const location = useLocation();
-  console.log(rooms);
+
   return (
     <div>
       <Nav
         appearance="subtle"
-        className="overflow-y-scroll custom-scroll padded"
+        className="overflow-y-scroll custom-scroll "
         vertical
         reversed
         style={{ height: `calc(100% - ${aboveElementHeight}px)` }}
@@ -27,6 +27,7 @@ const ChatRoomlList = ({ aboveElementHeight }) => {
             return (
               <Nav.Item
                 key={room.id}
+                state={{ fromNav: true }}
                 componentClass={Link}
                 to={`/chat/${room.id}`}
                 eventKey={`/chat/${room.id}`}
@@ -35,6 +36,7 @@ const ChatRoomlList = ({ aboveElementHeight }) => {
               </Nav.Item>
             );
           })}
+        <Nav.Item> </Nav.Item>
       </Nav>
     </div>
   );

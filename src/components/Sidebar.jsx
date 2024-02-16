@@ -13,8 +13,8 @@ const Sidebar = () => {
     }
   }, [TopsideRef]);
   return (
-    <div className="pt-2">
-      <div ref={TopsideRef}>
+    <div>
+      <div ref={TopsideRef} className="pt-2">
         <DashboardToggle />
         <CreateRoomBtn />
         <Divider>Join conversation</Divider>
