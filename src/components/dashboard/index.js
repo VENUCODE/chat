@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Badge, Button, Drawer, Avatar, Icon, Divider } from 'rsuite';
+import { Alert, Button, Drawer, Icon, Divider } from 'rsuite';
 import { useProfile } from '../../context/profile.context';
 import EditableInput from '../EditableInput';
 import { child, ref, set } from 'firebase/database';
