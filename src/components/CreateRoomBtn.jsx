@@ -100,7 +100,7 @@ const CreateRoomBtn = () => {
             block
             appearance="primary"
             onClick={onSubmit}
-            disabled={isLoading}
+            disabled={!isLoading}
           >
             Create new chat room
           </Button>

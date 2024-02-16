@@ -32,7 +32,7 @@ const Dashboard = ({ onSignOut }) => {
             <UploadAvatarBtn />
           </div>
           <div className="flex-1 gap-3 align-middle relative pt-16 text-center">
-            <h3 className="font-res"> Hey , {profile.username}</h3>
+            <h3 className="font-res capitalize"> Hey , {profile.username}</h3>
             <span
               onClick={() => {
                 setEditable(p => !p);

@@ -4,7 +4,7 @@ import { useProfile } from '../context/profile.context';
 import Loading from './loader';
 const PrivateRoute = ({ children, ...props }) => {
   const { profile, isLoading } = useProfile();
-  console.log('Private is Loading:', isLoading);
+  // console.log('Private is Loading:', isLoading);
 
   if (isLoading && !profile) return <Loading />;
   else if (!isLoading && profile) {
