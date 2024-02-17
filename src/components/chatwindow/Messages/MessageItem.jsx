@@ -1,8 +1,6 @@
 import React from 'react';
-import TimeAgo from 'timeago-react';
+
 import ProfileDisplayModal from './ProfileDisplayModal';
-import { Icon } from 'rsuite';
-import { auth } from '../../../misc/firebase';
 
 const MessageItem = ({ message }) => {
   const { author, createdAt, text } = message;
@@ -29,8 +27,8 @@ const MessageItem = ({ message }) => {
             author={author}
           />
         </div>
-        <div class="flex max-w-96 bg-white rounded p-3 gap-3">
-          <p class="text-gray-700">{text}</p>
+        <div class="flex max-w-96 bg-violet-700  rounded p-3 gap-3">
+          <p class="text-slate-50">{text}</p>
         </div>
       </div>
     </li>

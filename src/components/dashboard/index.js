@@ -40,9 +40,11 @@ const Dashboard = ({ onSignOut }) => {
           backgroundSize: 'cover',
           backdropFilter: 'blur(10px)',
           borderRadius: '2rem',
+          backgroundColor: 'gray',
+          backgroundBlendMode: 'screen',
         }}
       >
-        <div class=" realtive  h-full w-full flex justify-center  items-start py-3 ">
+        <div class=" realtive  h-full w-full flex justify-center  items-start py-3  ">
           <div class="h-56 w-72 absolute flex justify-center items-center">
             <ProfileAvatar
               class="object-cover h-20 w-20 rounded-full"

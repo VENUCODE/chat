@@ -10,9 +10,9 @@ const RoomInfoBtnModal = () => {
   const name = useCurrentRoom(v => v.name);
   return (
     <div className="px-1 ">
-      <Button onClick={open} color="blue">
+      <Button onClick={open}>
         <Icon icon={'podcast'} className="mr-1 " />
-        About
+        Info
       </Button>
       <Modal show={isOpen} onHide={close}>
         <Modal.Header className="text-center">

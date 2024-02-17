@@ -36,9 +36,12 @@ const Chat = () => {
 
   return (
     <CurrentRoomProvider data={currentRoomData}>
-      <div>
+      <div style={{ backgroundColor: 'rgba(0,20,255,0.2)', margin: '0px' }}>
         {/* //SECTION - top */}
-        <div className="chat-top bg-blue-500 px-2">
+        <div
+          className="chat-top  px-2"
+          style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
+        >
           <Top />
         </div>
         {/* //SECTION -messages */}

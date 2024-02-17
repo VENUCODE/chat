@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { database } from '../../../misc/firebase';
 import {
@@ -13,31 +13,40 @@ import { transformToArrayWithId } from '../../../misc/helper';
 import MessageItem from './MessageItem';
 import { Loader } from 'rsuite';
 const Messages = () => {
-  const [messages, setMessages] = useState();
-  const [iseLoading, setIsLoading] = useState(false);
+  const [messages, setMessages] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { chatId } = useParams();
   const isChatEmpy = messages && messages.length === 0;
   const canShowMessages = messages && messages.length > 0;
   useEffect(() => {
     setIsLoading(true);
-    onValue(
-      query(ref(database, 'messages'), orderByChild('roomId'), equalTo(chatId)),
-      snap => {
-        const data = transformToArrayWithId(snap.val());
-        setMessages(data);
-      }
-    );
-    setIsLoading(false);
-    return () => {
+
+    const messageRef = ref(database, 'messages');
+    const queryRef = query(messageRef, orderByChild('roomId'), equalTo(chatId));
+
+    const handleData = snap => {
+      const data = transformToArrayWithId(snap.val());
+      setMessages(data);
       setIsLoading(false);
-      off(ref(database, '/messages'));
+    };
+
+    const handleError = error => {
+      console.error('Error fetching messages:', error);
+      setIsLoading(false);
+      // Handle error state if needed
+    };
+
+    onValue(queryRef, handleData, handleError);
+
+    return () => {
+      off(queryRef, handleData);
     };
   }, [chatId]);
 
   return (
     <ul className="msg-list custom-scroll">
-      {isChatEmpy && <li> No messages yet</li>}
-      {iseLoading && (
+      {isLoading && isChatEmpy && <li> No messages yet</li>}
+      {isLoading && (
         <Loader vertical center content="loading chat" speed="slow" />
       )}
       {canShowMessages &&

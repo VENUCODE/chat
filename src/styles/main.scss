@@ -10,7 +10,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background-color: #fcfcfc;
+  background-color: black;
 }
 
 html,
@@ -66,7 +66,7 @@ body,
   justify-content: center;
 }
 
-$chat-t: 75px;
+$chat-t: 68px;
 $chat-b: 65px;
 
 .chat-top {
@@ -75,6 +75,8 @@ $chat-b: 65px;
 
 .chat-bottom {
   height: $chat-b;
+  padding-left: $indent_1;
+  padding-right: $indent_1;
 }
 
 .chat-middle {
@@ -111,5 +113,38 @@ $chat-b: 65px;
   }
 }
 .rs-nav-item-active {
-  background-color: rgba(1, 118, 244, 0.358);
+  background-color: rgba(0, 20, 255, 0.2);
+}
+
+.dot1 {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  background-color: blue;
+  filter: blur(80px);
+  bottom: 0;
+  left: 100vh;
+
+  z-index: -1;
+  &::before {
+    content: '';
+    position: relative;
+    height: 50px;
+    width: 50px;
+    background-color: blue;
+    filter: blur(10px);
+
+    z-index: -1;
+  }
+}
+
+.dot2 {
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  background-color: violet;
+  filter: blur(80px);
+  top: 4rem;
+  right: 5rem;
+  z-index: -1;
 }

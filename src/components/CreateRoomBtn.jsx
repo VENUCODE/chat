@@ -61,9 +61,23 @@ const CreateRoomBtn = () => {
   });
 
   return (
-    <div className="m-1">
-      <Button color="green" onClick={openModal}>
-        <Icon icon={'creative'} />
+    <div className="m-1 ">
+      <Button
+        style={{ backgroundColor: 'rgba(0,2,255,0.5)', padding: '5px' }}
+        onClick={openModal}
+        className="cursor-pointer flex  align-items-center p-0"
+      >
+        <Icon icon={'plus'} size="x" className=" bg-white-45 mr-1 text-white" />
+
+        <Icon
+          icon="home"
+          className="text-white p-2 "
+          size="x"
+          style={{
+            backgroundColor: 'rgba(255,255,255,0.4)',
+            borderRadius: '5px',
+          }}
+        />
       </Button>
       <Modal show={isOpen} onHide={close}>
         <Modal.Header>

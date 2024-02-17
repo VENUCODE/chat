@@ -20,7 +20,11 @@ const Home = () => {
     <RoomsProvider>
       <Grid
         fluid
-        style={{ overflowY: 'hidden', height: '100%', ' margin': '0' }}
+        style={{
+          overflowY: 'hidden',
+          height: '100%',
+          backgroundColor: 'transparent',
+        }}
       >
         <Row className="h-100 m-0 p-0">
           {canRenderSidebar && (
@@ -32,7 +36,7 @@ const Home = () => {
           {/* //SECTION -Home page is already private */}
           <Switch>
             <Route exact path="/chat/:chatId">
-              <Col xs={24} md={16} className="h-100 bg-blue-100">
+              <Col xs={24} md={16} className="h-100 ">
                 <Chat />
               </Col>
             </Route>

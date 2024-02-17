@@ -13,12 +13,17 @@ const Sidebar = () => {
     }
   }, [TopsideRef]);
   return (
-    <div>
-      <div ref={TopsideRef} className="pt-2">
-        <DashboardToggle />
-        <CreateRoomBtn />
-        <Divider>Join conversation</Divider>
+    <div style={{ backgroundColor: 'rgba(0,20,255,0.09)' }}>
+      <div ref={TopsideRef}>
+        <div
+          className="flex justify-between align-items-center pt-2 pb-2 "
+          style={{ backgroundColor: 'white' }}
+        >
+          <DashboardToggle />
+          <CreateRoomBtn />
+        </div>
       </div>
+      <Divider>Join conversation</Divider>
       <ChatRoomlList aboveElementHeight={height} />
     </div>
   );
