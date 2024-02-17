@@ -63,7 +63,7 @@ const CreateRoomBtn = () => {
   return (
     <div className="m-1 ">
       <Button
-        style={{ backgroundColor: 'rgba(0,2,255,0.5)', padding: '5px' }}
+        style={{ backgroundColor: 'rgba(255,255,255,0.5)', padding: '5px' }}
         onClick={openModal}
         className="cursor-pointer flex  align-items-center p-0"
       >

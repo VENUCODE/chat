@@ -31,7 +31,7 @@ const Dashboard = ({ onSignOut }) => {
     <>
       <Drawer.Header></Drawer.Header>
 
-      <Divider>Profile</Divider>
+      <Divider>Dashboard</Divider>
       <Drawer.Body
         className="realtive "
         style={{
@@ -41,7 +41,7 @@ const Dashboard = ({ onSignOut }) => {
           backdropFilter: 'blur(10px)',
           borderRadius: '2rem',
           backgroundColor: 'gray',
-          backgroundBlendMode: 'screen',
+          backgroundBlendMode: 'darken',
         }}
       >
         <div class=" realtive  h-full w-full flex justify-center  items-start py-3  ">

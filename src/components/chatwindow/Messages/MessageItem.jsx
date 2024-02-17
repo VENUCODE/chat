@@ -1,7 +1,6 @@
 import React from 'react';
-
 import ProfileDisplayModal from './ProfileDisplayModal';
-
+import TimeAgo from 'timeago-react';
 const MessageItem = ({ message }) => {
   const { author, createdAt, text } = message;
   return (
@@ -27,9 +26,16 @@ const MessageItem = ({ message }) => {
             author={author}
           />
         </div>
-        <div class="flex max-w-96 bg-violet-700  rounded p-3 gap-3">
+        <div class="flex max-w-96 bg-violet-700  rounded p-3 gap-3 relative">
           <p class="text-slate-50">{text}</p>
         </div>
+        <p>
+          <TimeAgo
+            datetime={new Date(createdAt)}
+            className="ml-1 font-mono font-thin  text-slate-900"
+            style={{ fontSize: '10px', right: '0' }}
+          />
+        </p>
       </div>
     </li>
   );

@@ -1,20 +1,30 @@
 import React, { useCallback } from 'react';
-import { Drawer, Icon, Alert } from 'rsuite';
+import { Icon, Drawer, Alert } from 'rsuite';
+import { ref, set } from 'firebase/database';
 import { useModalState, useMediaQuery } from '../../misc/customhook';
 import Dashboard from '.';
-import { auth } from '../../misc/firebase';
+import { auth, database } from '../../misc/firebase';
+import {
+  isOfflineForDatabase,
+  useProfile,
+} from '../../context/profile.context';
 import ProfileAvatar from '../ProfileAvatar';
-import { useProfile } from '../../context/profile.context';
-
 const DashboardToggle = () => {
   const { isOpen, open, close } = useModalState();
   const { profile } = useProfile();
   const isMobile = useMediaQuery('(max-width:992px)');
   const onSignOut = useCallback(() => {
-    auth.signOut();
-    close();
-    Alert.info('Signed out', 4000);
+    set(ref(database, `/status/${auth.currentUser.uid}`), isOfflineForDatabase)
+      .then(() => {
+        auth.signOut();
+        Alert.info('Signed out', 4000);
+        close();
+      })
+      .catch(err => {
+        Alert.error(err.message, 4000);
+      });
   }, [close]);
+
   return (
     <>
       <span onClick={open} className="w-1/4 cursor-pointer">
@@ -31,13 +41,19 @@ const DashboardToggle = () => {
           <Icon
             icon="info"
             size="x"
-            className="relative text-violet-900"
+            className="relative text-slate-50"
             style={{ bottom: '-10px' }}
           />
         </span>
       </span>
 
-      <Drawer full={isMobile} show={isOpen} onHide={close} placement="left">
+      <Drawer
+        full={isMobile}
+        show={isOpen}
+        onHide={close}
+        placement="left"
+        style={{ backgroundColor: 'red' }}
+      >
         <Dashboard onSignOut={onSignOut} />
       </Drawer>
     </>
