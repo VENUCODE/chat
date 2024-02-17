@@ -12,15 +12,24 @@
         ".write": "auth!==null"
       },
       ".read": "auth!==null",
-      ".write": "auth!==null"
+      ".write": "auth!==null",
+
+      ".indexOn": ["lastMessage/author/uid", "roomId"]
     },
     "messages": {
       "$message_id": {
         ".read": "auth!==null",
         ".write": "auth!==null"
       },
+      ".indexOn": ["author/uid"],
       ".read": "auth!==null",
       ".write": "auth!==null"
+    },
+    "status": {
+      "$user_id": {
+        ".read": "auth!==null",
+        ".write": "$user_id===auth.uid"
+      }
     },
     ".read": false,
     ".write": false

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-
+import { ref, onValue, off } from 'firebase/database';
+import { database } from '../misc/firebase';
 export function useModalState(defaultValue = false) {
   const [isOpen, setisOpen] = useState(false);
   const open = useCallback(() => setisOpen(true), []);
@@ -25,4 +26,22 @@ export const useMediaQuery = query => {
   }, [query]);
 
   return matches;
+};
+//ANCHOR - function to check the presence of a particular user
+export const usePresence = uid => {
+  const [presence, setPresence] = useState(null);
+
+  useEffect(() => {
+    const userStatusRef = ref(database, `/status/${uid}`);
+    onValue(userStatusRef, function (snap) {
+      if (snap.exists()) {
+        const data = snap.val();
+        setPresence(data);
+      }
+    });
+    return () => {
+      off(userStatusRef);
+    };
+  });
+  return presence;
 };

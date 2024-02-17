@@ -1,26 +1,31 @@
 import React from 'react';
 import ProfileDisplayModal from './ProfileDisplayModal';
 import TimeAgo from 'timeago-react';
+import PresenceDot from '../../PresenceDot';
+import { useProfile } from '../../../context/profile.context';
 const MessageItem = ({ message }) => {
   const { author, createdAt, text } = message;
-  return (
-    <li className="padded ml-2 ">
-      {/* <div className="d-flex align-items-center font-bolder mb-1">
-        <ProfileDisplayModal author={author} />
-        <span className="ml-2">{author.name}</span>
-        <span className="ml-2">
+  const { profile } = useProfile();
+  return author.uid === profile.uid ? (
+    <li className="padded ml-2">
+      <div class="flex mb-4 cursor-pointer justify-end">
+        <p>
           <TimeAgo
             datetime={new Date(createdAt)}
-            className="font-normal text-black-45"
+            className="mr-1 font-mono font-thin  text-slate-900"
+            style={{ fontSize: '10px', right: '0' }}
           />
-        </span>
+        </p>
+        <div class="flex max-w-96 bg-fuchsia-500 rounded p-3 gap-3 relative">
+          <p class="text-slate-50">{text}</p>
+        </div>
       </div>
-      <div>
-        {' '}
-        <span className="word-break-all text-black font-bold">{text}</span>
-      </div> */}
+    </li>
+  ) : (
+    <li className="padded ml-2 ">
       <div class="flex mb-4 cursor-pointer">
-        <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
+        <div class="d-flex align-items-center font-bolder mb-1 mr-1">
+          <PresenceDot uid={author.uid} />
           <ProfileDisplayModal
             className="w-8 h-8 rounded-full"
             author={author}

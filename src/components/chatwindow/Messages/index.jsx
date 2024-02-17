@@ -44,7 +44,7 @@ const Messages = () => {
   }, [chatId]);
 
   return (
-    <ul className="msg-list custom-scroll">
+    <ul className="msg-list custom-scroll flex-1 align-items-end">
       {isLoading && isChatEmpy && <li> No messages yet</li>}
       {isLoading && (
         <Loader vertical center content="loading chat" speed="slow" />
