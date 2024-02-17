@@ -92,12 +92,9 @@ const UploadAvatarBtn = () => {
   };
   return (
     <>
-      <div class="mt-10 absolute left-0 top-[-1rem] ">
-        <label class="tracking-wide uppercase  cursor-pointer  bg-amber-500 p-1 d-grid text-white rounded-full h-[20px] w-[20px]  focus:bg-amber-800 hover:bg-amber-800">
-          <span class=" text-base leading-normal ">
-            <Icon icon={'edit2'} size="md" className="m-1" />
-            Edit
-          </span>
+      <Button>
+        <label class="tracking-wide uppercase  cursor-pointer  d-grid text-white rounded-full h-[20px] w-[20px]  ">
+          <Icon icon={'camera'} className="text-gray-900" size="md" />
           <input
             type="file"
             class="hidden"
@@ -105,7 +102,7 @@ const UploadAvatarBtn = () => {
             onChange={handleFileChange}
           />
         </label>
-      </div>
+      </Button>
 
       <Modal show={isOpen} onHide={close}>
         <Modal.Header>

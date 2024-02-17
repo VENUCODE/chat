@@ -36,9 +36,8 @@ const EditableInput = ({
     setEditable(isEditable);
   }, [isEditable, setEditable]);
   return (
-    <div className="mt-4">
-      {label}
-      <InputGroup className="focus:outline-none hover:outline-none border-none">
+    <div>
+      <InputGroup className="border-none outline-none focus:outline-none focus:border-collapse">
         <Input
           disabled={!isEditable}
           value={inputValue}
