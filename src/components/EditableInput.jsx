@@ -15,7 +15,6 @@ const EditableInput = ({
   const [isEditable, setisEditable] = useState(editable);
   const editClick = useCallback(() => {
     setisEditable(p => !p);
-
     setInputValue(intialValue);
   }, [intialValue]);
 
@@ -29,14 +28,13 @@ const EditableInput = ({
       setEditable(false);
     }
   };
-  const handleInputChange = (value, event) => {
+  const handleInputChange = value => {
     setInputValue(value);
   };
-  useEffect(() => {
-    setEditable(isEditable);
-  }, [isEditable, setEditable]);
+
   return (
     <div>
+      {label}
       <InputGroup className="border-none outline-none focus:outline-none focus:border-collapse">
         <Input
           disabled={!isEditable}

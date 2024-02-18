@@ -5,9 +5,11 @@ import { ButtonToolbar, Icon } from 'rsuite';
 import { useMediaQuery } from '../../../misc/customhook';
 import RoomInfoBtnModal from './RoomInfoBtnModal';
 
+import EditRoomBtnDrawer from './EditRoomBtnDrawer';
 const Top = () => {
   const name = useCurrentRoom(state => state.name);
   const isMobile = useMediaQuery('(max-width:992px)');
+
   return (
     <div
       className="d-flex justify-between align-items-center "
@@ -24,7 +26,7 @@ const Top = () => {
               ? 'd-inline-block  ml-2  link-unstyled focus:no-underline hover:no-underline'
               : 'none ml-2'
           }
-          style={!isMobile ? { color: 'white' } : {}}
+          style={isMobile ? { color: 'white' } : { display: 'none' }}
         />
         <span className="text-disappear text-slate-50  ml-3 capitalize px-4">
           {name}
@@ -33,7 +35,7 @@ const Top = () => {
       <div className="mr-2">
         {' '}
         <ButtonToolbar className="ws-nowrap uppercase text-slate-50">
-          todo
+          <EditRoomBtnDrawer />
         </ButtonToolbar>
       </div>
       <div>

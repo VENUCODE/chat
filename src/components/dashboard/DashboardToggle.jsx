@@ -39,7 +39,7 @@ const DashboardToggle = () => {
             className="img-fullsize"
           />
           <Icon
-            icon="info"
+            icon="gear"
             size="x"
             className="relative text-slate-50"
             style={{ bottom: '-10px' }}
