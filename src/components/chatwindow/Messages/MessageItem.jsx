@@ -7,7 +7,9 @@ import { useCurrentRoom } from '../../../context/current-room.context';
 import { auth } from '../../../misc/firebase';
 import IconBtnControl from './IconBtnControl';
 import { useHover, useMediaQuery } from '../../../misc/customhook';
-const MessageItem = ({ message, handleAdmin, handleLike }) => {
+//!SECTION END OF IMPORTS
+//SECTION - START OF MessageItem component
+const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
   const { author, createdAt, text, likes, likeCount } = message;
   const { profile } = useProfile();
   const isMobile = useMediaQuery('(max-width: 992px)');
@@ -29,23 +31,33 @@ const MessageItem = ({ message, handleAdmin, handleLike }) => {
   };
   return author.uid === profile.uid ? (
     //Outgoing message
-    <li className="padded ml-2">
+    <li className="padded ml-2" ref={selfRef}>
       <div className="flex mb-4 cursor-pointer justify-end">
         <p className=" flex gap-2 flex-row-reverse align-items-center mr-2">
+          {canShowIcons && (
+            <>
+              <IconBtnControl
+                {...(true ? { color: 'red' } : {})}
+                isVisible={true}
+                iconName="trash"
+                onLike={() => handleDelete(message.id)}
+                tooltip={`Delete this message`}
+              />
+              <IconBtnControl
+                {...(true ? { color: 'green' } : {})}
+                isVisible={true}
+                iconName="heart"
+                tooltip={`${likeCount} Likes`}
+                badgeContent={likeCount}
+              />{' '}
+            </>
+          )}
           <span
-            className="mr-1 font-mono font-thin  text-slate-900"
+            className="mr-1 ml-1 font-mono font-thin  text-slate-900"
             style={{ fontSize: '10px', right: '0' }}
           >
             {dateFormated(createdAt)}
           </span>
-
-          <IconBtnControl
-            {...(true ? { color: 'green' } : {})}
-            isVisible={true}
-            iconName="heart"
-            tooltip={`${likeCount} Likes`}
-            badgeContent={likeCount}
-          />
         </p>
         <div className="flex max-w-96 bg-fuchsia-500 rounded p-3 gap-3 relative">
           <p className="text-slate-50">{text}</p>
@@ -85,6 +97,12 @@ const MessageItem = ({ message, handleAdmin, handleLike }) => {
           <p className="text-slate-50">{text}</p>
         </div>
         <p className=" flex gap-2 flex-row-reverse align-items-center">
+          <span
+            className="ml-1 mr-1 font-mono font-thin  text-slate-900"
+            style={{ fontSize: '10px', right: '0' }}
+          >
+            {dateFormated(createdAt)}
+          </span>
           <IconBtnControl
             {...(isLiked ? { color: 'red' } : {})}
             isVisible={canShowIcons}
@@ -93,12 +111,6 @@ const MessageItem = ({ message, handleAdmin, handleLike }) => {
             onLike={() => handleLike(message.id)}
             badgeContent={likeCount}
           />
-          <span
-            className="ml-1 font-mono font-thin  text-slate-900"
-            style={{ fontSize: '10px', right: '0' }}
-          >
-            {dateFormated(createdAt)}
-          </span>
         </p>
       </div>
     </li>

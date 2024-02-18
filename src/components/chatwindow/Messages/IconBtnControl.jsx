@@ -15,7 +15,7 @@ const IconBtnControl = ({
 }) => {
   return (
     <div
-      className="ml-2"
+      className="ml-1 mr-1"
       style={{ visibility: isVisible ? 'visible' : 'hidden' }}
     >
       <ConditionalBadge condition={badgeContent}>

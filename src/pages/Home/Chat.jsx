@@ -45,7 +45,7 @@ const Chat = () => {
       <div style={{ backgroundColor: 'rgba(0,20,255,0.2)' }}>
         {/* //SECTION - top */}
         <div
-          className="chat-top  px-2"
+          className="chat-top "
           style={{ backgroundColor: 'rgba(0,0,0,0.3)' }}
         >
           <Top />

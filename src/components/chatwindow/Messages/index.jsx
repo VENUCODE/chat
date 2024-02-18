@@ -8,6 +8,7 @@ import {
   equalTo,
   onValue,
   off,
+  update,
   runTransaction,
 } from 'firebase/database';
 import { transformToArrayWithId } from '../../../misc/helper';
@@ -74,7 +75,6 @@ const Messages = () => {
 
   //SECTION - function to handle the like functinality
   const handleLike = useCallback(async messageId => {
-    let alertMsg;
     const dbRef = ref(database, `/messages/${messageId}`);
     const { uid } = auth.currentUser;
     try {
@@ -99,6 +99,41 @@ const Messages = () => {
     }
   }, []);
 
+  const handleDelete = useCallback(
+    async msgId => {
+      // eslint-disable-next-line no-alert
+      if (!window.confirm('Delete this message?')) {
+        return;
+      }
+
+      const isLast = messages[messages.length - 1].id === msgId;
+
+      const updates = {};
+      //this will delete the message
+      updates[`/messages/${msgId}`] = null;
+      //last message which will make the room empty
+      if (isLast && messages.length > 1) {
+        updates[`/rooms/${chatId}/lastMessage`] = {
+          ...messages[messages.length - 2],
+          msgId: messages[messages.length - 2].id,
+        };
+      }
+
+      if (isLast && messages.length === 1) {
+        updates[`/rooms/${chatId}/lastMessage`] = null;
+      }
+
+      try {
+        await update(ref(database), updates);
+
+        Alert.info('Message has been deleted');
+      } catch (err) {
+        return Alert.error(err.message);
+      }
+    },
+    [chatId, messages]
+  );
+
   return (
     <ul className="msg-list custom-scroll flex-1 align-items-end">
       {isLoading && isChatEmpy && <li> No messages yet</li>}
@@ -109,8 +144,10 @@ const Messages = () => {
             message={msg}
             handleAdmin={handleAdmin}
             handleLike={handleLike}
+            handleDelete={handleDelete}
           />
         ))}
+      <li></li>
     </ul>
   );
 };
