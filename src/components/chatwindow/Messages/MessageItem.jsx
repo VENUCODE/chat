@@ -7,10 +7,11 @@ import { useCurrentRoom } from '../../../context/current-room.context';
 import { auth } from '../../../misc/firebase';
 import IconBtnControl from './IconBtnControl';
 import { useHover, useMediaQuery } from '../../../misc/customhook';
+import ImgBtnModal from './ImgBtnModal';
 //!SECTION END OF IMPORTS
 //SECTION - START OF MessageItem component
 const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
-  const { author, createdAt, text, likes, likeCount } = message;
+  const { author, createdAt, text, likes, likeCount, file } = message;
   const { profile } = useProfile();
   const isMobile = useMediaQuery('(max-width: 992px)');
   const [selfRef, isHovered] = useHover();
@@ -29,11 +30,32 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
       hour12: true,
     });
   };
+  const renderFileMessage = file => {
+    if (file.contentType.includes('image')) {
+      return (
+        <div className="height-220">
+          <ImgBtnModal src={file.url} fileName={file.name} />
+        </div>
+      );
+    }
+
+    if (file.contentType.includes('audio')) {
+      return (
+        // eslint-disable-next-line jsx-a11y/media-has-caption
+        <audio controls>
+          <source src={file.url} type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
+      );
+    }
+
+    return <a href={file.url}>Download {file.name}</a>;
+  };
   return author.uid === profile.uid ? (
     //Outgoing message
     <li className="padded ml-2" ref={selfRef}>
       <div className="flex mb-4 cursor-pointer justify-end">
-        <p className=" flex gap-2 flex-row-reverse align-items-center mr-2">
+        <div className=" flex gap-2 flex-row-reverse align-items-center mr-2">
           {canShowIcons && (
             <>
               <IconBtnControl
@@ -58,9 +80,10 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
           >
             {dateFormated(createdAt)}
           </span>
-        </p>
+        </div>
         <div className="flex max-w-96 bg-fuchsia-500 rounded p-3 gap-3 relative">
-          <p className="text-slate-50">{text}</p>
+          {text && <p className="text-slate-50">{text}</p>}
+          {file && renderFileMessage(file)}
         </div>
       </div>
     </li>
@@ -94,9 +117,10 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
           </ProfileDisplayModal>
         </div>
         <div className="flex max-w-96 bg-violet-700  rounded p-3 gap-3 relative">
-          <p className="text-slate-50">{text}</p>
+          {text && <p className="text-slate-50">{text}</p>}
+          {file && renderFileMessage(file)}
         </div>
-        <p className=" flex gap-2 flex-row-reverse align-items-center">
+        <div className=" flex gap-2 flex-row-reverse align-items-center">
           <span
             className="ml-1 mr-1 font-mono font-thin  text-slate-900"
             style={{ fontSize: '10px', right: '0' }}
@@ -111,7 +135,7 @@ const MessageItem = ({ message, handleAdmin, handleLike, handleDelete }) => {
             onLike={() => handleLike(message.id)}
             badgeContent={likeCount}
           />
-        </p>
+        </div>
       </div>
     </li>
   );

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useRef } from 'react';
 import { ref, onValue, off } from 'firebase/database';
 import { database } from '../misc/firebase';
+
 export function useModalState(defaultValue = false) {
   const [isOpen, setisOpen] = useState(false);
   const open = useCallback(() => setisOpen(true), []);

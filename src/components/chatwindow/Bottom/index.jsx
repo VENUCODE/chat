@@ -4,6 +4,9 @@ import { push, ref, serverTimestamp, update, child } from 'firebase/database';
 import { useParams } from 'react-router';
 import { useProfile } from '../../../context/profile.context';
 import { database } from '../../../misc/firebase';
+import AttatchmentBtn from './AttatchmentBtn';
+import AudioMsgBtn from './AudioMsgbtn';
+
 function AssembleMessage(profile, chatId) {
   return {
     roomId: chatId,
@@ -29,7 +32,6 @@ const Bottom = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { profile } = useProfile();
   const { chatId } = useParams();
-
   const onInputChangeHandler = useCallback(value => {
     setInput(value);
   }, []);
@@ -59,9 +61,58 @@ const Bottom = () => {
       Alert.error(error.message, 3000);
     }
   };
+
+  function assembleMessage(profile, chatId) {
+    return {
+      roomId: chatId,
+      author: {
+        name: profile.name,
+        uid: profile.uid,
+        createdAt: profile.createdAt,
+        ...(profile.avatar ? { avatar: profile.avatar } : {}),
+      },
+      createdAt: serverTimestamp(),
+      likeCount: 0,
+    };
+  }
+  const afterUpload = useCallback(
+    async files => {
+      setIsLoading(true);
+
+      const updates = {};
+
+      files.forEach(file => {
+        const msgData = assembleMessage(profile, chatId);
+        msgData.file = file;
+        console.log(file.url);
+        const messageId = push(ref(database, 'messages')).key;
+
+        updates[`/messages/${messageId}`] = msgData;
+      });
+
+      const lastMsgId = Object.keys(updates).pop();
+
+      updates[`/rooms/${chatId}/lastMessage`] = {
+        ...updates[lastMsgId],
+        msgId: lastMsgId,
+      };
+      console.log({ updates: updates });
+      try {
+        await update(ref(database), updates);
+        setIsLoading(false);
+      } catch (err) {
+        setIsLoading(false);
+        console.log(err.message);
+        Alert.error(err.message);
+      }
+    },
+    [profile, chatId]
+  );
   return (
     <div>
       <InputGroup>
+        <AudioMsgBtn afterUpload={afterUpload} />
+        <AttatchmentBtn afterUpload={afterUpload} />
         <Input
           value={input}
           onChange={onInputChangeHandler}
