@@ -3,7 +3,7 @@ import { Loader, Nav } from 'rsuite';
 import RoomItem from './RoomItem';
 import { useRooms } from '../../context/rooms.context';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
+import { useLocation } from 'react-router-dom';
 const ChatRoomlList = ({ aboveElementHeight }) => {
   const rooms = useRooms();
   const location = useLocation();
@@ -36,7 +36,6 @@ const ChatRoomlList = ({ aboveElementHeight }) => {
               </Nav.Item>
             );
           })}
-        <Nav.Item> </Nav.Item>
       </Nav>
     </div>
   );

@@ -1,43 +1,47 @@
 import React from 'react';
-import { Badge, Icon, IconButton, Tooltip, Whisper } from 'rsuite';
-const ConditionalBage = ({ children, condition }) => {
-  return condition ? (
-    <Badge content={condition}>{children}</Badge>
-  ) : (
-    { children }
-  );
+import { Badge, Whisper, Tooltip, IconButton, Icon } from 'rsuite';
+
+const ConditionalBadge = ({ condition, children }) => {
+  return condition ? <Badge content={condition}>{children}</Badge> : children;
 };
+
 const IconBtnControl = ({
   isVisible,
   iconName,
-  tootip,
-  onClick,
-  badgeCount,
+  tooltip,
+  onLike,
+  badgeContent,
   ...props
 }) => {
   return (
     <div
-      className="ml-1"
+      className="ml-2"
       style={{ visibility: isVisible ? 'visible' : 'hidden' }}
     >
-      <ConditionalBage condition={badgeCount}>
+      <ConditionalBadge condition={badgeContent}>
         <Whisper
           placement="top"
           delay={0}
           delayHide={0}
           delayShow={0}
-          trigger={'hover'}
-          speaker={<Tooltip>{tootip}</Tooltip>}
+          trigger="hover"
+          speaker={<Tooltip>{tooltip}</Tooltip>}
         >
           <IconButton
             {...props}
-            onClick={onClick}
             circle
             size="xs"
+            onClick={
+              onLike
+                ? onLike
+                : () => {
+                    console.log('');
+                  }
+            }
             icon={<Icon icon={iconName} />}
           />
         </Whisper>
-      </ConditionalBage>
+      </ConditionalBadge>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
-import { database } from '../../../misc/firebase';
+import { auth, database } from '../../../misc/firebase';
 import {
   ref,
   query,
@@ -12,7 +12,7 @@ import {
 } from 'firebase/database';
 import { transformToArrayWithId } from '../../../misc/helper';
 import MessageItem from './MessageItem';
-import { Alert, Loader } from 'rsuite';
+import { Alert } from 'rsuite';
 const Messages = () => {
   const [messages, setMessages] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -71,15 +71,45 @@ const Messages = () => {
     [chatId]
   );
   //!SECTION end of handle admin function
+
+  //SECTION - function to handle the like functinality
+  const handleLike = useCallback(async messageId => {
+    let alertMsg;
+    const dbRef = ref(database, `/messages/${messageId}`);
+    const { uid } = auth.currentUser;
+    try {
+      await runTransaction(dbRef, msg => {
+        if (msg) {
+          if (msg.likes && msg.likes[uid]) {
+            msg.likeCount -= 1;
+            msg.likes[uid] = null;
+          } else {
+            msg.likeCount += 1;
+            if (!msg.like) {
+              msg.likes = {};
+            }
+            msg.likes[uid] = true;
+          }
+        }
+
+        return msg;
+      });
+    } catch (error) {
+      Alert.error(error.message, 2000);
+    }
+  }, []);
+
   return (
     <ul className="msg-list custom-scroll flex-1 align-items-end">
       {isLoading && isChatEmpy && <li> No messages yet</li>}
-      {isLoading && (
-        <Loader vertical center content="loading chat" speed="slow" />
-      )}
       {canShowMessages &&
         messages.map(msg => (
-          <MessageItem key={msg.id} message={msg} handleAdmin={handleAdmin} />
+          <MessageItem
+            key={msg.id}
+            message={msg}
+            handleAdmin={handleAdmin}
+            handleLike={handleLike}
+          />
         ))}
     </ul>
   );

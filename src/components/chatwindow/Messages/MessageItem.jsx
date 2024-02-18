@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { memo } from 'react';
 import ProfileDisplayModal from './ProfileDisplayModal';
 import PresenceDot from '../../PresenceDot';
 import { useProfile } from '../../../context/profile.context';
@@ -6,32 +6,46 @@ import { Button } from 'rsuite';
 import { useCurrentRoom } from '../../../context/current-room.context';
 import { auth } from '../../../misc/firebase';
 import IconBtnControl from './IconBtnControl';
-const dateFormated = createdAt => {
-  return new Date(createdAt).toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
-};
-const MessageItem = ({ message, handleAdmin }) => {
-  const { author, createdAt, text } = message;
+import { useHover, useMediaQuery } from '../../../misc/customhook';
+const MessageItem = ({ message, handleAdmin, handleLike }) => {
+  const { author, createdAt, text, likes, likeCount } = message;
   const { profile } = useProfile();
+  const isMobile = useMediaQuery('(max-width: 992px)');
+  const [selfRef, isHovered] = useHover();
+  const canShowIcons = isMobile || isHovered;
   const isAdmin = useCurrentRoom(v => v.isAdmin);
   const admins = useCurrentRoom(v => v.admins);
   const isMsgAuthorAdmin = admins.includes(author.uid);
   const isAuthor = auth.currentUser.uid === author.uid;
   const canGrantPermission = isAdmin && !isAuthor;
+  const isLiked = likes && Object.keys(likes).includes(auth.currentUser.uid);
 
+  const dateFormated = createdAt => {
+    return new Date(createdAt).toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+    });
+  };
   return author.uid === profile.uid ? (
+    //Outgoing message
     <li className="padded ml-2">
       <div className="flex mb-4 cursor-pointer justify-end">
-        <p>
+        <p className=" flex gap-2 flex-row-reverse align-items-center mr-2">
           <span
             className="mr-1 font-mono font-thin  text-slate-900"
             style={{ fontSize: '10px', right: '0' }}
           >
             {dateFormated(createdAt)}
           </span>
+
+          <IconBtnControl
+            {...(true ? { color: 'green' } : {})}
+            isVisible={true}
+            iconName="heart"
+            tooltip={`${likeCount} Likes`}
+            badgeContent={likeCount}
+          />
         </p>
         <div className="flex max-w-96 bg-fuchsia-500 rounded p-3 gap-3 relative">
           <p className="text-slate-50">{text}</p>
@@ -39,7 +53,11 @@ const MessageItem = ({ message, handleAdmin }) => {
       </div>
     </li>
   ) : (
-    <li className="padded ml-2 ">
+    //SECTION -Incoming messages
+    <li
+      className={`padded mb-1 cursor-pointer ${isHovered ? 'bg-black-02' : ''}`}
+      ref={selfRef}
+    >
       <div className="flex mb-4 cursor-pointer">
         <div className="d-flex align-items-center font-bolder mb-1 mr-1">
           <PresenceDot uid={author.uid} />
@@ -68,13 +86,12 @@ const MessageItem = ({ message, handleAdmin }) => {
         </div>
         <p className=" flex gap-2 flex-row-reverse align-items-center">
           <IconBtnControl
-            {...(true ? { color: 'red' } : {})}
-            isVisible
+            {...(isLiked ? { color: 'red' } : {})}
+            isVisible={canShowIcons}
             iconName="heart"
-            tootip="Like this message"
-            onClick={() => {}}
-            badgeCount={5}
-            className="text-red-400"
+            tooltip={isLiked ? 'Liked message' : 'Like this message'}
+            onLike={() => handleLike(message.id)}
+            badgeContent={likeCount}
           />
           <span
             className="ml-1 font-mono font-thin  text-slate-900"
@@ -88,4 +105,4 @@ const MessageItem = ({ message, handleAdmin }) => {
   );
 };
 
-export default MessageItem;
+export default memo(MessageItem);

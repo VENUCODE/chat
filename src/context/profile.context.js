@@ -26,6 +26,8 @@ export const ProfileProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     var userStatusRef;
+    const connectedRef = query(ref(database, '.info/connected'));
+
     const unsub = auth.onAuthStateChanged(authObj => {
       if (authObj) {
         const userRef = ref(database, `/profiles/${authObj.uid}`);
@@ -70,7 +72,9 @@ export const ProfileProvider = ({ children }) => {
       if (unsub) {
         off(unsub);
       }
-      off(query(ref(database, '.info/connected')));
+      if (connectedRef) {
+        off(connectedRef);
+      }
     };
   }, []);
   return (

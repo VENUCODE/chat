@@ -5,7 +5,7 @@ import { transformToArrayWithId } from '../misc/helper';
 
 const RoomsContext = createContext();
 export const RoomsProvider = ({ children }) => {
-  const [rooms, setRooms] = useState(null);
+  const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
     const roomRef = ref(database, 'rooms');
@@ -14,7 +14,9 @@ export const RoomsProvider = ({ children }) => {
       setRooms(data);
     });
     return () => {
-      off(roomRef);
+      if (roomRef) {
+        off(roomRef);
+      }
     };
   }, []);
   return (
