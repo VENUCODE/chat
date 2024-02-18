@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProfileDisplayModal from './ProfileDisplayModal';
 import PresenceDot from '../../PresenceDot';
 import { useProfile } from '../../../context/profile.context';
 import { Button } from 'rsuite';
 import { useCurrentRoom } from '../../../context/current-room.context';
 import { auth } from '../../../misc/firebase';
+import IconBtnControl from './IconBtnControl';
 const dateFormated = createdAt => {
   return new Date(createdAt).toLocaleTimeString('en-US', {
     hour: 'numeric',
@@ -65,7 +66,16 @@ const MessageItem = ({ message, handleAdmin }) => {
         <div className="flex max-w-96 bg-violet-700  rounded p-3 gap-3 relative">
           <p className="text-slate-50">{text}</p>
         </div>
-        <p>
+        <p className=" flex gap-2 flex-row-reverse align-items-center">
+          <IconBtnControl
+            {...(true ? { color: 'red' } : {})}
+            isVisible
+            iconName="heart"
+            tootip="Like this message"
+            onClick={() => {}}
+            badgeCount={5}
+            className="text-red-400"
+          />
           <span
             className="ml-1 font-mono font-thin  text-slate-900"
             style={{ fontSize: '10px', right: '0' }}
