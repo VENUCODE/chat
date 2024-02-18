@@ -9,6 +9,7 @@ import EditRoomBtnDrawer from './EditRoomBtnDrawer';
 const Top = () => {
   const name = useCurrentRoom(state => state.name);
   const isMobile = useMediaQuery('(max-width:992px)');
+  const isAdmin = useCurrentRoom(v => v.isAdmin);
 
   return (
     <div
@@ -35,7 +36,7 @@ const Top = () => {
       <div className="mr-2">
         {' '}
         <ButtonToolbar className="ws-nowrap uppercase text-slate-50">
-          <EditRoomBtnDrawer />
+          {isAdmin && <EditRoomBtnDrawer />}
         </ButtonToolbar>
       </div>
       <div>

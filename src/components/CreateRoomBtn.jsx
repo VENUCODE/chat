@@ -13,7 +13,7 @@ import {
 } from 'rsuite';
 import { useModalState } from '../misc/customhook';
 import { push, ref, serverTimestamp, set } from 'firebase/database';
-import { database } from '../misc/firebase';
+import { auth, database } from '../misc/firebase';
 const INITIAL_FORM = {
   name: '',
   description: '',
@@ -39,6 +39,9 @@ const CreateRoomBtn = () => {
     const newRoomData = {
       createdAt: serverTimestamp(),
       ...formValue,
+      admins: {
+        [auth.currentUser.uid]: true,
+      },
     };
     try {
       const postListRef = ref(database, 'rooms');
@@ -67,12 +70,11 @@ const CreateRoomBtn = () => {
         onClick={openModal}
         className="cursor-pointer flex  align-items-center p-0"
       >
-        <Icon icon={'plus'} size="x" className=" bg-white-45 mr-1 text-white" />
+        <Icon icon={'plus'} className=" bg-white-45 mr-1 text-white" />
 
         <Icon
           icon="home"
           className="text-white p-2 "
-          size="x"
           style={{
             backgroundColor: 'rgba(255,255,255,0.4)',
             borderRadius: '5px',

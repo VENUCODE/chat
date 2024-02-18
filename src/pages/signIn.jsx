@@ -36,6 +36,7 @@ const SignIn = () => {
           result.user.photoURL
         );
       }
+      console.log(result.user.uid);
       Alert.success('Welcome' + result.user.displayName, 2000);
     } catch (error) {
       Alert.error(error.message);

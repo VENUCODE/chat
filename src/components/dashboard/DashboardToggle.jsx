@@ -35,12 +35,10 @@ const DashboardToggle = () => {
           <ProfileAvatar
             name={profile.name}
             src={profile.avatar}
-            size="2x"
             className="img-fullsize"
           />
           <Icon
             icon="gear"
-            size="x"
             className="relative text-slate-50"
             style={{ bottom: '-10px' }}
           />

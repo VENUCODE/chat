@@ -1,45 +1,77 @@
 import React from 'react';
 import ProfileDisplayModal from './ProfileDisplayModal';
-import TimeAgo from 'timeago-react';
 import PresenceDot from '../../PresenceDot';
 import { useProfile } from '../../../context/profile.context';
-const MessageItem = ({ message }) => {
+import { Button } from 'rsuite';
+import { useCurrentRoom } from '../../../context/current-room.context';
+import { auth } from '../../../misc/firebase';
+const dateFormated = createdAt => {
+  return new Date(createdAt).toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+};
+const MessageItem = ({ message, handleAdmin }) => {
   const { author, createdAt, text } = message;
   const { profile } = useProfile();
+  const isAdmin = useCurrentRoom(v => v.isAdmin);
+  const admins = useCurrentRoom(v => v.admins);
+  const isMsgAuthorAdmin = admins.includes(author.uid);
+  const isAuthor = auth.currentUser.uid === author.uid;
+  const canGrantPermission = isAdmin && !isAuthor;
+
   return author.uid === profile.uid ? (
     <li className="padded ml-2">
-      <div class="flex mb-4 cursor-pointer justify-end">
+      <div className="flex mb-4 cursor-pointer justify-end">
         <p>
-          <TimeAgo
-            datetime={new Date(createdAt)}
+          <span
             className="mr-1 font-mono font-thin  text-slate-900"
             style={{ fontSize: '10px', right: '0' }}
-          />
+          >
+            {dateFormated(createdAt)}
+          </span>
         </p>
-        <div class="flex max-w-96 bg-fuchsia-500 rounded p-3 gap-3 relative">
-          <p class="text-slate-50">{text}</p>
+        <div className="flex max-w-96 bg-fuchsia-500 rounded p-3 gap-3 relative">
+          <p className="text-slate-50">{text}</p>
         </div>
       </div>
     </li>
   ) : (
     <li className="padded ml-2 ">
-      <div class="flex mb-4 cursor-pointer">
-        <div class="d-flex align-items-center font-bolder mb-1 mr-1">
+      <div className="flex mb-4 cursor-pointer">
+        <div className="d-flex align-items-center font-bolder mb-1 mr-1">
           <PresenceDot uid={author.uid} />
-          <ProfileDisplayModal
-            className="w-8 h-8 rounded-full"
-            author={author}
-          />
+          <ProfileDisplayModal author={author}>
+            {canGrantPermission && (
+              <Button
+                style={{
+                  backgroundColor: !isMsgAuthorAdmin
+                    ? 'rgb(134 ,239, 172)'
+                    : 'rgb(244, 63 ,94)',
+                }}
+                block
+                onClick={() => {
+                  handleAdmin(author.uid);
+                }}
+              >
+                {isMsgAuthorAdmin
+                  ? 'Remove Admin Permission'
+                  : 'Give Admin permission'}
+              </Button>
+            )}
+          </ProfileDisplayModal>
         </div>
-        <div class="flex max-w-96 bg-violet-700  rounded p-3 gap-3 relative">
-          <p class="text-slate-50">{text}</p>
+        <div className="flex max-w-96 bg-violet-700  rounded p-3 gap-3 relative">
+          <p className="text-slate-50">{text}</p>
         </div>
         <p>
-          <TimeAgo
-            datetime={new Date(createdAt)}
+          <span
             className="ml-1 font-mono font-thin  text-slate-900"
             style={{ fontSize: '10px', right: '0' }}
-          />
+          >
+            {dateFormated(createdAt)}
+          </span>
         </p>
       </div>
     </li>

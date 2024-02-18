@@ -125,6 +125,11 @@ const Dashboard = ({ onSignOut }) => {
                 )}
               </div>
               <div className="pb-2 pt-2">
+                <h6 class=" font-thin text-sm text-center">
+                  <Icon icon={'google-plus'} style={{ color: 'red' }} />{' '}
+                  {profile.email}
+                </h6>
+                <Divider />
                 <h6 class="text-gray-500 text-sm">
                   Created on <Divider vertical />{' '}
                   {new Date(profile.createdAt).toDateString()}

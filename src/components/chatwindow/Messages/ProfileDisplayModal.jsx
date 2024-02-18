@@ -1,8 +1,8 @@
 import React from 'react';
 import ProfileAvatar from '../../ProfileAvatar';
 import { useModalState } from '../../../misc/customhook';
-import { Button, Divider, Modal } from 'rsuite';
-const ProfileDisplayModal = ({ author }) => {
+import { Divider, Modal } from 'rsuite';
+const ProfileDisplayModal = ({ children, author, ...props }) => {
   const { isOpen, open, close } = useModalState();
   return (
     <>
@@ -33,6 +33,7 @@ const ProfileDisplayModal = ({ author }) => {
               {new Date(author.createdAt).toDateString()}
             </p>
           </div>
+          <div>{children}</div>
         </div>
         {/* </Modal.Body> */}
       </Modal>

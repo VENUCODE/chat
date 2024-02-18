@@ -7,14 +7,14 @@
       }
     },
     "rooms": {
+      ".read": "auth !== null",
       "$room_id": {
-        ".read": "auth!==null",
-        ".write": "auth!==null"
-      },
-      ".read": "auth!==null",
-      ".write": "auth!==null",
-
-      ".indexOn": ["lastMessage/author/uid", "roomId"]
+        ".read": "auth !== null",
+        ".write": "!data.exists() || data.child('admins').child(auth.uid).val() == true",
+        "lastMessage": {
+          ".write": "auth !== null"
+        }
+      }
     },
     "messages": {
       "$message_id": {

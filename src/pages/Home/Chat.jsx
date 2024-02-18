@@ -7,6 +7,8 @@ import { useRooms } from '../../context/rooms.context';
 import { Loader } from 'rsuite';
 import { Planet } from 'react-kawaii';
 import { CurrentRoomProvider } from '../../context/current-room.context';
+import { transformArray } from '../../misc/helper';
+import { auth } from '../../misc/firebase';
 const Chat = () => {
   const { chatId } = useParams();
   //LINK - grabbing the current room data from the context
@@ -14,7 +16,7 @@ const Chat = () => {
   if (!rooms) {
     return <Loader center vertical size="md" speed="slow" content="loading" />;
   }
-  const currentRoom = rooms.find((room, index) => {
+  const currentRoom = rooms.find(room => {
     return room.id === chatId;
   });
   if (!currentRoom) {
@@ -29,14 +31,18 @@ const Chat = () => {
     );
   }
   const { name, description } = currentRoom;
+  const admins = transformArray(currentRoom.admins);
+  const isAdmin = admins.includes(auth.currentUser.uid);
   const currentRoomData = {
     name,
     description,
+    admins,
+    isAdmin,
   };
 
   return (
     <CurrentRoomProvider data={currentRoomData}>
-      <div style={{ backgroundColor: 'rgba(0,20,255,0.2)', margin: '0px' }}>
+      <div style={{ backgroundColor: 'rgba(0,20,255,0.2)' }}>
         {/* //SECTION - top */}
         <div
           className="chat-top  px-2"

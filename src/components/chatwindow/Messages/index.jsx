@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { database } from '../../../misc/firebase';
 import {
@@ -8,10 +8,11 @@ import {
   equalTo,
   onValue,
   off,
+  runTransaction,
 } from 'firebase/database';
 import { transformToArrayWithId } from '../../../misc/helper';
 import MessageItem from './MessageItem';
-import { Loader } from 'rsuite';
+import { Alert, Loader } from 'rsuite';
 const Messages = () => {
   const [messages, setMessages] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,6 +44,33 @@ const Messages = () => {
     };
   }, [chatId]);
 
+  //SECTION - handling permission management of the user
+
+  const handleAdmin = useCallback(
+    async uid => {
+      let alertMsg;
+      const dbRef = ref(database, `/rooms/${chatId}/admins`);
+      try {
+        await runTransaction(dbRef, admins => {
+          if (admins) {
+            if (admins[uid]) {
+              admins[uid] = null;
+              alertMsg = 'Admin permission revoked';
+            } else {
+              admins[uid] = true;
+              alertMsg = 'Admin permission Granted';
+            }
+          }
+          Alert.info(alertMsg, 4000);
+          return admins;
+        });
+      } catch (error) {
+        Alert.error(error.message, 40000);
+      }
+    },
+    [chatId]
+  );
+  //!SECTION end of handle admin function
   return (
     <ul className="msg-list custom-scroll flex-1 align-items-end">
       {isLoading && isChatEmpy && <li> No messages yet</li>}
@@ -50,7 +78,9 @@ const Messages = () => {
         <Loader vertical center content="loading chat" speed="slow" />
       )}
       {canShowMessages &&
-        messages.map(msg => <MessageItem key={msg.id} message={msg} />)}
+        messages.map(msg => (
+          <MessageItem key={msg.id} message={msg} handleAdmin={handleAdmin} />
+        ))}
     </ul>
   );
 };

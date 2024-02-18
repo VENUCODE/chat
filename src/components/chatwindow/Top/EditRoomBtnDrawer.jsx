@@ -17,9 +17,8 @@ const EditRoomBtnDrawer = () => {
   const updateData = async (key, value) => {
     const dbref = ref(database, `rooms/${chatId}`);
     try {
-      set(child(dbref, key), value).then(
-        Alert.success(`Room ${key} changed `, 2000)
-      );
+      await set(child(dbref, key), value);
+      Alert.success(`Room ${key} changed `, 2000);
       close();
     } catch (error) {
       Alert.error(error.message, 4000);
@@ -36,18 +35,13 @@ const EditRoomBtnDrawer = () => {
   return (
     <div>
       <Button
-        size="x"
+        size="sm"
         style={{ backgroundColor: 'indigo', color: 'white' }}
         onClick={open}
       >
-        <Icon icon={'gear'} />
+        <Icon icon={'gear'} spin className="m-1" />
       </Button>
-      <Drawer
-        size={isMobile ? 'full' : 'sm'}
-        show={isOpen}
-        onHide={close}
-        placement="right"
-      >
+      <Drawer full={isMobile} show={isOpen} onHide={close} placement="right">
         <Drawer.Header>
           <Drawer.Title>
             Edit Room Info <Icon icon={'gear'} spin={isOpen} />
